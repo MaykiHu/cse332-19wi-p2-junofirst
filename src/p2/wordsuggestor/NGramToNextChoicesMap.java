@@ -1,13 +1,11 @@
 package p2.wordsuggestor;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.function.Supplier;
 
 import cse332.datastructures.containers.Item;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.misc.Dictionary;
-import cse332.interfaces.trie.TrieMap;
 import cse332.misc.LargeValueFirstItemComparator;
 import cse332.sorts.InsertionSort;
 import cse332.types.AlphabeticString;
