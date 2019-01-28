@@ -1,11 +1,13 @@
 package p2.wordsuggestor;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.function.Supplier;
 
 import cse332.datastructures.containers.Item;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.misc.Dictionary;
+import cse332.interfaces.trie.TrieMap;
 import cse332.misc.LargeValueFirstItemComparator;
 import cse332.sorts.InsertionSort;
 import cse332.types.AlphabeticString;
@@ -26,7 +28,20 @@ public class NGramToNextChoicesMap {
      * Increments the count of word after the particular NGram ngram.
      */
     public void seenWordAfterNGram(NGram ngram, String word) {
-        throw new NotYetImplementedException();
+        if (map != null && ngram != null && word != null) { // If either ngram or word isn't one of the possibilities, don't follow through
+            AlphabeticString newWord = new AlphabeticString(word);
+            if (map.find(ngram) == null) { // If ngram doesn't exist
+                map.insert(ngram, newInner.get());
+                map.find(ngram).insert(newWord, 1);
+            } else {
+                Integer wordCount = map.find(ngram).find(newWord); // Count of instances word is following ngram
+                if (wordCount == null) { // If the word is not mapped to the ngram
+                    map.find(ngram).insert(newWord, 1);
+                } else {
+                    map.find(ngram).insert(newWord, wordCount++);
+                }
+            }
+        }
     }
 
     /**
@@ -39,7 +54,14 @@ public class NGramToNextChoicesMap {
      * @return An array of all the Items for the requested ngram.
      */
     public Item<String, Integer>[] getCountsAfter(NGram ngram) {
-        throw new NotYetImplementedException();
+        if (map != null) {
+            if (map.find(ngram).isEmpty()) {
+                // return array size 0
+            } else {
+                
+            }
+        }
+        return null; // Only have this as a placeholder so you can return 
     }
 
     public String[] getWordsAfter(NGram ngram, int k) {
