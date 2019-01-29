@@ -18,7 +18,7 @@ import cse332.interfaces.misc.DeletelessDictionary;
  *    the order they are stored in the list, starting with the first
  *    element in the list.
  */
-public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
+public class MoveToFrontList<K, V> extends DeleteNlessDictionary<K, V> {
     @Override
     public V insert(K key, V value) {
         throw new NotYetImplementedException();
