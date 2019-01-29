@@ -27,19 +27,17 @@ public class NGramToNextChoicesMap {
      * Increments the count of word after the particular NGram ngram.
      */
     public void seenWordAfterNGram(NGram ngram, String word) {
-        if (map != null && ngram != null && word != null) { // If either ngram or word isn't one of the possibilities, don't follow through
-            AlphabeticString newWord = new AlphabeticString(word);
-            if (map.find(ngram) == null) { // If ngram doesn't exist
-                map.insert(ngram, newInner.get());
+        AlphabeticString newWord = new AlphabeticString(word);
+        if (map.find(ngram) == null) { // If ngram doesn't exist
+            map.insert(ngram, newInner.get());
+            map.find(ngram).insert(newWord, 1);
+        } else {
+            Integer wordCount = map.find(ngram).find(newWord); // Count of instances word is following ngram
+            if (wordCount == null) { // If the word is not mapped to the ngram
                 map.find(ngram).insert(newWord, 1);
             } else {
-                Integer wordCount = map.find(ngram).find(newWord); // Count of instances word is following ngram
-                if (wordCount == null) { // If the word is not mapped to the ngram
-                    map.find(ngram).insert(newWord, 1);
-                } else {
-                    map.find(ngram).insert(newWord, wordCount++);
-                }
-            }
+                map.find(ngram).insert(newWord, wordCount + 1);
+            } 
         }
     }
 
@@ -53,20 +51,16 @@ public class NGramToNextChoicesMap {
      * @return An array of all the Items for the requested ngram.
      */
     public Item<String, Integer>[] getCountsAfter(NGram ngram) {
+        if (map.find(ngram) == null) {
+            return (Item<String, Integer>[]) new Item[0];
+        }
+        Dictionary<AlphabeticString, Integer> theDict = map.find(ngram);
         Item<String, Integer>[] theArray = (Item<String, Integer>[]) new Item[map.find(ngram).size()];
-        if (map != null) {
-            Dictionary<AlphabeticString, Integer> theDict = map.find(ngram);
-            if (theDict.isEmpty()) {
-                return (Item<String, Integer>[]) new Item[0];
-            } else if (!theDict.isEmpty()) {
-                
-                int index = 0;
-                for (Item<AlphabeticString, Integer> item: map.find(ngram)) {
-                    String something = item.key.toString();
-                    theArray[index] = new Item<String, Integer>(something, item.value);
-                    index++;
-                }
-            }
+        int index = 0;
+        for (Item<AlphabeticString, Integer> item: map.find(ngram)) {
+            String something = item.key.toString();
+            theArray[index] = new Item<String, Integer>(something, item.value);
+            index++;
         }
         return theArray; // Only have this as a placeholder so you can return 
     }

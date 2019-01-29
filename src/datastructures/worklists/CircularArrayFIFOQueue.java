@@ -9,7 +9,7 @@ import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
  * See cse332/interfaces/worklists/FixedSizeFIFOWorkList.java
  * for method specifications.
  */
-public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
+public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFIFOWorkList<E> {
 	private int front;
 	private int back;
 	private int size;
@@ -89,22 +89,19 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public int compareTo(FixedSizeFIFOWorkList<E> other) {
-        // You will implement this method in project 2. Leave this method unchanged for project 1.
-        if (this.size() == other.size()) {
-            int pos = 0;
-            while (this.peek(0).equals(other.peek(0)) && pos + 1 < size()) {
-                pos++;
+        int pos = 0;
+        while (pos < Math.min(this.size, other.size())) {
+            if (!this.peek(pos).equals(other.peek(pos))) {
+                return this.peek(pos).compareTo(other.peek(pos));
             }
-            return this.peek(pos).hashCode() - other.peek(pos).hashCode();
-        } else {
-            return this.size() - other.size();
+            pos++;
         }
+        return this.size() - other.size();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
-        // You will finish implementing this method in project 2. Leave this method unchanged for project 1.
         if (this == obj) {
             return true;
         }
@@ -113,16 +110,15 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
         }
         else {
             FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
-
-            // Your code goes here
-
-            throw new NotYetImplementedException();
+            if(this.compareTo(other) != 0) {
+                return false;
+            }
+            return true;
         }
     }
 
     @Override
     public int hashCode() {
-        // You will implement this method in project 2. Leave this method unchanged for project 1.
         throw new NotYetImplementedException();
     }
 }

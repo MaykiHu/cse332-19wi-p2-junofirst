@@ -18,16 +18,48 @@ import cse332.interfaces.misc.DeletelessDictionary;
  *    the order they are stored in the list, starting with the first
  *    element in the list.
  */
-public class MoveToFrontList<K, V> extends DeleteNlessDictionary<K, V> {
+public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
+    private Node front;
+
+    private class Node {
+        private V data;
+        private Node next;
+
+        public Node(V data) {
+            this.data = data;
+            this.next = null;
+        }
+
+        public Node(V data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+    
     @Override
     public V insert(K key, V value) {
-        throw new NotYetImplementedException();
+        V location = find(key);
+        front = delete(front, item);
+        first = new Node(item, front);
+        return location;
     }
 
     @Override
     public V find(K key) {
-        throw new NotYetImplementedException();
+        int i = 1;
+        Node x = new
+        while(Node x = front; x != null; x = x.next) {
+            if (x.item == key) {
+                return i;
+            }
+            i++;
+        }
+        return 0;
     }
+    
+//    private boolean isEmpty() {
+//        return front == null;
+//    }
 
     @Override
     public Iterator<Item<K, V>> iterator() {
