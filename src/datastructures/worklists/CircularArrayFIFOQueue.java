@@ -90,7 +90,15 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     @Override
     public int compareTo(FixedSizeFIFOWorkList<E> other) {
         // You will implement this method in project 2. Leave this method unchanged for project 1.
-        throw new NotYetImplementedException();
+        if (this.size() == other.size()) {
+            int pos = 0;
+            while (this.peek(0).equals(other.peek(0)) && pos + 1 < size()) {
+                pos++;
+            }
+            return this.peek(pos).hashCode() - other.peek(pos).hashCode();
+        } else {
+            return this.size() - other.size();
+        }
     }
 
     @Override
