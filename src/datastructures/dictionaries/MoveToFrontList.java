@@ -35,7 +35,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
     public V insert(K key, V value) {
         V data = find(key); // Data at key
         if (data == null) { // Inserts at front since no key existed before
-            Node newFront = new Node(new Item(key, value));
+            Node newFront = new Node(new Item<K, V>(key, value));
             newFront.next = front;
             front = newFront;
         } else { // Accesses and moves to front
