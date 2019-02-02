@@ -38,6 +38,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
             Node newFront = new Node(new Item<K, V>(key, value));
             newFront.next = front;
             front = newFront;
+            size++;
         } else { // Accesses and moves to front
             boolean keyFound = false;
             Node prev = null;
