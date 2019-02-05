@@ -1,6 +1,7 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.trees.BinarySearchTree;
+import javafx.scene.Node;
 
 /**
  * TODO: Replace this comment with your own as appropriate.
@@ -29,5 +30,37 @@ import cse332.datastructures.trees.BinarySearchTree;
  */
 
 public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V>  {
-    // TODO: Implement me!
+    private AVLNode root;
+    
+    public void AVLTree(AVLNode root) {
+        this.root = root;
+    }
+    
+    public void doubleRotateWithRight(AVLNode root) {
+        rotateWithLeft(root.right);
+        rotateWithRight(root);
+    }
+    
+    public void rotateWithRight(AVLNode root) {
+        AVLNode temp = root.right;
+        root.right = temp.left;
+        temp.left = root;
+        root.height = max(root.right.height(),
+                          root.left.height()) + 1;
+        temp.height = max(temp.right.height(),
+                          temp.left.height()) + 1;
+        root = temp;
+    }    
+    
+    private class AVLNode {
+        private int height;
+        private AVLNode left;
+        private AVLNode right;
+        
+        public void AVLNode() {
+            this.height = 0;
+        } 
+        
+        // Need another constructor for new nodes so that we can increment the height property
+    }
 }
