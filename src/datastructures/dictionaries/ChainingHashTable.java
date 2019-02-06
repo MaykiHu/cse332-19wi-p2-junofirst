@@ -1,12 +1,14 @@
 package datastructures.dictionaries;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 import cse332.datastructures.containers.*;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.misc.DeletelessDictionary;
 import cse332.interfaces.misc.Dictionary;
+import datastructures.worklists.ArrayStack;
 
 /**
  * TODO: Replace this comment with your own as appropriate.
@@ -24,23 +26,89 @@ import cse332.interfaces.misc.Dictionary;
  */
 public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     private Supplier<Dictionary<K, V>> newChain;  
-
+    private Dictionary<K, V>[] hashArray;
+    private int capacity;
+    @SuppressWarnings("rawtypes")
+    private ArrayStack capacities;
+    
+    @SuppressWarnings("unchecked")
     public ChainingHashTable(Supplier<Dictionary<K, V>> newChain) {
         this.newChain = newChain;
+        initCapacities();
+        capacity = (int) capacities.next(); // We know our capacities are stored as ints
+        hashArray = (Dictionary<K, V>[])new Comparable[capacity];
     }
 
+    // Adds initial capacity sizes which are prime
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void initCapacities() {
+        capacities = new ArrayStack();
+        capacities.add(205759); // Each are divided by 2 and the nearest prime
+        capacities.add(102877);
+        capacities.add(51437);
+        capacities.add(25717);
+        capacities.add(12853);
+        capacities.add(6421);
+        capacities.add(3203);
+        capacities.add(1597);
+        capacities.add(797);
+        capacities.add(397);
+        capacities.add(197);
+        capacities.add(97);
+        capacities.add(47);
+        capacities.add(23);
+        capacities.add(11);
+    }
+    
+    // Returns the index of key
+    private int getArrIndex(K key) {
+        int code = key.hashCode();
+        return code % capacity;
+    }
+    
     @Override
     public V insert(K key, V value) {
-        throw new NotYetImplementedException();
+        int index = getArrIndex(key);
+        V prevVal = find(key);
+        Dictionary<K, V> chain = hashArray[index];
+        if (chain == null) { // This will be a new chain (and item)
+            hashArray[index] = newChain.get(); // Make a new chain
+        } 
+        if (chain.find(key) == null) { // This will be a new item in chain
+            size++;
+        }
+        chain.insert(key, value); // Inserts value at key
+        // This is where we would change the capacity and expand our array
+        // For certain, if capacities.size() == 0, we would just multiply our capacity by 2
+        // Because we used all our primes and are over 200k, we can just multiply by 2
+        return prevVal;
     }
 
     @Override
     public V find(K key) {
-        throw new NotYetImplementedException();
+        int index = getArrIndex(key);   // Index of where key is located
+        Dictionary<K, V> chain = hashArray[index];   // Where key should be stored, get it
+        if (chain != null) { 
+            return chain.find(key);
+        }
+        return null; // There is no mapping for this key
     }
 
     @Override
     public Iterator<Item<K, V>> iterator() {
-        throw new NotYetImplementedException();
+        return new HashTableIterator();
+    }
+    
+    // Has to implement Iterator
+    private class HashTableIterator implements Iterator<Item<K, V>> {
+        public boolean hasNext() {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        public Item<K, V> next() {
+            // TODO Auto-generated method stub
+            return null;
+        }
     }
 }
