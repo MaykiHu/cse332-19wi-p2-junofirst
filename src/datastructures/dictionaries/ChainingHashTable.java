@@ -36,7 +36,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         this.newChain = newChain;
         initCapacities();
         capacity = (int) capacities.next(); // We know our capacities are stored as ints
-        hashArray = (Dictionary<K, V>[])new Comparable[capacity];
+        hashArray = (Dictionary<K, V> []) new Dictionary[capacity];
     }
 
     // Adds initial capacity sizes which are prime
@@ -70,14 +70,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     public V insert(K key, V value) {
         int index = getArrIndex(key);
         V prevVal = find(key);
-        Dictionary<K, V> chain = hashArray[index];
-        if (chain == null) { // This will be a new chain (and item)
-            hashArray[index] = newChain.get(); // Make a new chain
+        if (hashArray[index] == null) {           // This will be a new chain (and item)
+            hashArray[index] = newChain.get();    // Make a new chain
         } 
-        if (chain.find(key) == null) { // This will be a new item in chain
+        if (hashArray[index].find(key) == null) { // This will be a new item in chain
             size++;
         }
-        chain.insert(key, value); // Inserts value at key
+        hashArray[index].insert(key, value);      // Update chain with item
         // This is where we would change the capacity and expand our array
         // For certain, if capacities.size() == 0, we would just multiply our capacity by 2
         // Because we used all our primes and are over 200k, we can just multiply by 2
