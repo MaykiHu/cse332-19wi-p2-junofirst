@@ -66,6 +66,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         return code % capacity;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public V insert(K key, V value) {
         int index = getArrIndex(key);
@@ -77,9 +78,25 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             size++;
         }
         hashArray[index].insert(key, value);      // Update chain with item
-        // This is where we would change the capacity and expand our array
-        // For certain, if capacities.size() == 0, we would just multiply our capacity by 2
-        // Because we used all our primes and are over 200k, we can just multiply by 2
+        if (1.0 * size / capacity >= 1.0) {
+            size = 0;
+            if (capacities.size() == 0) {         // Update the capacity of table
+                capacity *= 2;
+            } else {
+                capacity = (int) capacities.next();
+            }
+            Dictionary<K, V>[] oldHashArray = hashArray;
+            hashArray = (Dictionary<K, V>[]) new Dictionary[capacity];
+            for (Dictionary<K, V> chain : oldHashArray) {
+                if (chain != null) {
+                    Iterator<Item<K, V>> itr = chain.iterator();
+                    while (itr.hasNext()) {
+                        Item<K, V> chainItem = itr.next();
+                        insert(chainItem.key, chainItem.value);
+                    }
+                }
+            }
+        }
         return prevVal;
     }
 
