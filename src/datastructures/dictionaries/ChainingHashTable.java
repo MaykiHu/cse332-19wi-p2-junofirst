@@ -78,7 +78,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             size++;
         }
         hashArray[index].insert(key, value);      // Update chain with item
-        if (1.0 * size / capacity >= 1.0) {
+        if (1.0 * size / capacity >= 0.75) {      // According to Java Doc, 0.75 is default load
             size = 0;
             if (capacities.size() == 0) {         // Update the capacity of table
                 capacity *= 2;
