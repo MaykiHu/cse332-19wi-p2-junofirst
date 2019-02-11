@@ -117,13 +117,45 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     
     // Has to implement Iterator
     private class HashTableIterator implements Iterator<Item<K, V>> {
+        private int currIndex;
+        @SuppressWarnings("rawtypes")
+        private ArrayStack chain;
+        
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        private void nextChain() {
+            while (currIndex < hashArray.length && chain == null) {
+                Dictionary<K, V> bucket = hashArray[currIndex];
+                if (bucket != null && !bucket.isEmpty()) {
+                    ArrayStack reverseChain = new ArrayStack();
+                    chain = new ArrayStack();
+                    for (Item<K, V> chainItem : bucket) {
+                        reverseChain.add(chainItem);
+                    }
+                    while (reverseChain.hasWork()) {
+                        chain.add(reverseChain.next());
+                    }
+                }
+                currIndex++;
+            }
+        }
+        
         public boolean hasNext() {
-            // TODO Auto-generated method stub
+            nextChain();
+            if (chain != null) {
+                return chain.hasWork();
+            }
             return false;
         }
 
         public Item<K, V> next() {
-            // TODO Auto-generated method stub
+            if (hasNext()) {
+                @SuppressWarnings("unchecked")
+                Item<K, V> chainItem = (Item<K, V>) chain.next();
+                if (!chain.hasWork()) {
+                    chain = null;
+                }
+                return chainItem;
+            }
             return null;
         }
     }
