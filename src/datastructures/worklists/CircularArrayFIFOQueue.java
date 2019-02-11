@@ -1,5 +1,6 @@
 package datastructures.worklists;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import cse332.exceptions.NotYetImplementedException;
@@ -122,7 +123,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
         int result = front;
         result = 31 * result + back;
         result = 31 * result + size;
-        result = 31 * result + queue.hashCode();
+        result = 31 * result + Arrays.hashCode(queue);
         return result;
     }
 }
