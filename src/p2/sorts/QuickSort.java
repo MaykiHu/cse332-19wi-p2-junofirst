@@ -55,7 +55,7 @@ public class QuickSort {
     private static <E> E median(E[] array, Comparator<E> comparator, int left, int right) {
         int mid = (left + right) / 2;
         sortThree(array, comparator, left, (left + right) / 2, right);
-        swap(array, mid, right - 1); // Swap our pivot to second-last pos, so we split less checks
+        swap(array, mid, right - 1); // Swap our pivot to second-last pos, so we split nicer index
         return array[right - 1];
     }
     
