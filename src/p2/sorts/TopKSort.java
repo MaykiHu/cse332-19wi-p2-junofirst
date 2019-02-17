@@ -11,16 +11,20 @@ public class TopKSort {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <E> void sort(E[] array, int k, Comparator<E> comparator) {
-        MinFourHeap sortedHeap = new MinFourHeap(comparator);
-        // Insert here a sort where the k-elements in array is the largest
-        for (int i = 0; i < k; i++) {   // These k elements should be the largest k
-            sortedHeap.add((Comparable) array[i]);
-        }
-        for (int i = 0; i < array.length; i++) {
+        MinFourHeap largeHeap = new MinFourHeap(comparator);
+        for (int i = 0; i < k; i++) {   
+            largeHeap.add((Comparable) array[i]);
             array[i] = null;
         }
+        for (int i = k; i < array.length; i++)  { // Swap out for larger values if need be
+            if (comparator.compare(array[i], (E) largeHeap.peek()) > 0)  {
+                largeHeap.next();
+                largeHeap.add((Comparable) array[i]);
+            }
+            array[i] = null;
+        }    
         for (int i = 0; i < k; i++) {   // Add the k elements from the sorted heap
-            array[i] = (E) sortedHeap.next();
+            array[i] = (E) largeHeap.next();
         }
     }
 }
