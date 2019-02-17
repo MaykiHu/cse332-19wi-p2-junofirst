@@ -2,6 +2,7 @@ package datastructures.worklists;
 
 import cse332.interfaces.worklists.PriorityWorkList;
 
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 /**
@@ -13,8 +14,10 @@ public class MinFourHeap<E extends Comparable<E>> extends PriorityWorkList<E> {
     private E[] data;
     private int size;
     private int capacity;
+    private Comparator<E> comparator;
     
-    public MinFourHeap() {
+    public MinFourHeap(Comparator<E> comparator) {
+        this.comparator = comparator;
         setup();
     }
     
@@ -36,7 +39,7 @@ public class MinFourHeap<E extends Comparable<E>> extends PriorityWorkList<E> {
         size++;
         int childLoc = size - 1;
         E childData = data[childLoc];    
-        while (childLoc > 0 && childData.compareTo(data[getParentLoc(childLoc)]) < 0) {
+        while (childLoc > 0 && comparator.compare(childData, data[getParentLoc(childLoc)]) < 0) {
             data[childLoc] = data[getParentLoc(childLoc)];
             childLoc = getParentLoc(childLoc);
         }                   
@@ -83,7 +86,7 @@ public class MinFourHeap<E extends Comparable<E>> extends PriorityWorkList<E> {
         boolean isOrdered = false;
         while (4 * parentLoc + 1 < size && !isOrdered) {
             childLoc = priorityChildLoc(parentLoc);
-            if (data[childLoc].compareTo(loc) < 0) {
+            if (comparator.compare(data[childLoc], loc) < 0) {
                 data[parentLoc] = data[childLoc];
                 parentLoc = childLoc;
             } else {
@@ -99,7 +102,7 @@ public class MinFourHeap<E extends Comparable<E>> extends PriorityWorkList<E> {
     	int nChild = 1;
     	int nextChildLoc = priorityChildLoc + 1;
     	while (nextChildLoc < size && nChild < 4) {
-    		if (data[nextChildLoc].compareTo(data[priorityChildLoc]) < 0) {
+    		if (comparator.compare(data[nextChildLoc], data[priorityChildLoc]) < 0) {
     			priorityChildLoc = nextChildLoc;
     		}
     		nChild++;

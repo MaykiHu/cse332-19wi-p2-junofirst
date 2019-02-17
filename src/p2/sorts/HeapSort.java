@@ -11,7 +11,7 @@ public class HeapSort {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <E> void sort(E[] array, Comparator<E> comparator) {
-        MinFourHeap sortedHeap = new MinFourHeap();
+        MinFourHeap sortedHeap = new MinFourHeap(comparator);
         for (E item : array) {
             sortedHeap.add((Comparable) item);
         }
