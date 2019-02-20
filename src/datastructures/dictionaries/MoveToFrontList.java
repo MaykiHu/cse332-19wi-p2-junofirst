@@ -23,7 +23,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
     
     private class Node {
         private Node next;
-        private Item<K, V> item;
+        private final Item<K, V> item;
 
         public Node(Item<K, V> item) {
             this.item = item;

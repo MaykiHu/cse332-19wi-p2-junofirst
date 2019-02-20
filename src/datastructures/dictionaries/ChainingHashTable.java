@@ -23,7 +23,7 @@ import datastructures.worklists.ArrayStack;
  *    NOTE: Do NOT copy the whole list!
  */
 public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
-    private Supplier<Dictionary<K, V>> newChain;  
+    private final Supplier<Dictionary<K, V>> newChain;  
     private Dictionary<K, V>[] hashArray;
     private int capacity;
     @SuppressWarnings("rawtypes")
