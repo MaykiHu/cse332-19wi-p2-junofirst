@@ -1,11 +1,9 @@
 package p2.wordsuggestor;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.function.Supplier;
 
 import cse332.datastructures.containers.Item;
-import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.misc.Dictionary;
 import cse332.misc.LargeValueFirstItemComparator;
 import cse332.sorts.InsertionSort;
@@ -51,11 +49,11 @@ public class NGramToNextChoicesMap {
      * 
      * @return An array of all the Items for the requested ngram.
      */
+    @SuppressWarnings("unchecked")
     public Item<String, Integer>[] getCountsAfter(NGram ngram) {
         if (map.find(ngram) == null) {
             return (Item<String, Integer>[]) new Item[0];
         }
-        Dictionary<AlphabeticString, Integer> theDict = map.find(ngram);
         Item<String, Integer>[] theArray = (Item<String, Integer>[]) new Item[map.find(ngram).size()];
         int index = 0;
         for (Item<AlphabeticString, Integer> item: map.find(ngram)) {
