@@ -135,9 +135,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         }
         ChainingHashTable<A, HashTrieNode> children = (ChainingHashTable<A, HashTrieMap<A, K, V>.HashTrieNode>) 
                                             root.pointers;
-        Iterator<A> itr = key.iterator();
-        while (itr.hasNext()) {
-            A currChar = itr.next();
+        Iterator<A> keyItr = key.iterator();
+        while (keyItr.hasNext()) {
+            A currChar = keyItr.next();
             if (children.find(currChar) != null) {
                 children = (ChainingHashTable<A, HashTrieMap<A, K, V>.HashTrieNode>) 
                 children.find(currChar).pointers;
