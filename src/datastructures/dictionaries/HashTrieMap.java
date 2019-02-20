@@ -76,10 +76,10 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         Iterator<A> itr = key.iterator(); // Should check if instance of
         while(itr.hasNext()) {
             A currChar = itr.next();
-            if (children.find(currChar) != null) {
-                prevVal = children.find(currChar).value;
-            } else {
+            if (children.find(currChar) == null) {
                 children.insert(currChar, new HashTrieNode());
+            } else {
+                prevVal = children.find(currChar).value;
             }
             if (!itr.hasNext()) {
                 if (children.find(currChar).value == null) {
