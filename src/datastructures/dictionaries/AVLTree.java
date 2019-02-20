@@ -2,7 +2,6 @@ package datastructures.dictionaries;
 
 import cse332.datastructures.trees.BinarySearchTree;
 import cse332.datastructures.trees.BinarySearchTree.BSTNode;
-import javafx.scene.Node;
 
 /**
  * TODO: Replace this comment with your own as appropriate.
