@@ -1,6 +1,7 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.trees.BinarySearchTree;
+import cse332.datastructures.trees.BinarySearchTree.BSTNode;
 
 /**
  * TODO: Replace this comment with your own as appropriate.
@@ -28,20 +29,17 @@ import cse332.datastructures.trees.BinarySearchTree;
  * 6. Do NOT override the toString method. It is used for grading.
  */
 
-public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V>  {
-    private AVLNode root;
-    
+public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V>  {    
     public AVLTree() {
         super();
-        this.root = null;
     }
     
     public class AVLNode extends BSTNode { // AVLNode is subclass of BSTNode
-        private int height;
+        public int height;
         
         public AVLNode(K key, V value) {
             super(key, value);
-            height = 1;
+            height = 0;
         }         
     }
     
@@ -52,7 +50,7 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
     
     private int height(AVLNode node) { // Accessing height of node
         if (node == null) {
-            return 0;
+            return -1;
         }
         return node.height;
     }
@@ -62,7 +60,7 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
             throw new IllegalArgumentException();
         }
         V oldValue = find(key);
-        root = insert(root, key, value); // Traverse through tree and insert
+        root = insert(cast(root), key, value); // Traverse through tree and insert
         return oldValue;
     }
     
@@ -136,42 +134,4 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
         problemNode.children[1] = rotateWithLeft(cast(problemNode.children[1]));
         return rotateWithRight(problemNode);
     }    
-    
-    public AVLNode find(K key, V value) {
-        AVLNode prev = null;
-        AVLNode current = this.root;
-
-        int child = -1;
-
-        while (current != null) {
-            int direction = Integer.signum(key.compareTo(current.key));
-
-            // We found the key!
-            if (direction == 0) {
-                return current;
-            }
-            else {
-                // direction + 1 = {0, 2} -> {0, 1}
-                child = Integer.signum(direction + 1);
-                prev = current;
-                current = cast(current.children[child]);
-            }
-        }
-
-        // If value is not null, we need to actually add in the new value
-        if (value != null) {
-            current = new AVLNode(key, null);
-            if (this.root == null) {
-                this.root = current;
-            }
-            else {
-                assert(child >= 0); // child should have been set in the loop
-                                    // above
-                prev.children[child] = current;
-            }
-            this.size++;
-        }
-
-        return current;
-    }
 }
