@@ -1,6 +1,7 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.trees.BinarySearchTree;
+import cse332.datastructures.trees.BinarySearchTree.BSTNode;
 import javafx.scene.Node;
 
 /**
@@ -32,35 +33,147 @@ import javafx.scene.Node;
 public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V>  {
     private AVLNode root;
     
-    public void AVLTree(AVLNode root) {
-        this.root = root;
+    public AVLTree() {
+        super();
+        this.root = null;
     }
     
-    public void doubleRotateWithRight(AVLNode root) {
-        rotateWithLeft(root.right);
-        rotateWithRight(root);
+    @SuppressWarnings("unchecked")
+    public AVLNode rotateWithLeft(AVLNode problemNode) {
+        AVLNode lChildProblem = (AVLTree<K, V>.AVLNode) problemNode.children[0];
+        problemNode.children[0] = lChildProblem.children[1];
+        lChildProblem.children[1] = problemNode;
+        AVLNode problemNodeL = cast(problemNode.children[0]);
+        AVLNode problemNodeR = cast(problemNode.children[1]);
+        problemNode.height = Math.max(height(problemNodeL), height(problemNodeR)) + 1;
+        AVLNode lChildProblemL = cast(lChildProblem.children[0]);
+        lChildProblem.height = Math.max(height(lChildProblemL), problemNode.height) + 1;
+        return lChildProblem;
     }
     
-    public void rotateWithRight(AVLNode root) {
-        AVLNode temp = root.right;
-        root.right = temp.left;
-        temp.left = root;
-        root.height = max(root.right.height(),
-                          root.left.height()) + 1;
-        temp.height = max(temp.right.height(),
-                          temp.left.height()) + 1;
-        root = temp;
+    @SuppressWarnings("unchecked")
+    public AVLNode rotateWithRight(AVLNode problemNode) {
+        AVLNode rChildProblem = (AVLTree<K, V>.AVLNode) problemNode.children[1];
+        problemNode.children[1] = rChildProblem.children[0];
+        rChildProblem.children[0] = problemNode;
+        AVLNode problemNodeL = cast(problemNode.children[0]);
+        AVLNode problemNodeR = cast(problemNode.children[1]);
+        problemNode.height = Math.max(height(problemNodeL), height(problemNodeR)) + 1;
+        AVLNode rChildProblemR = cast(rChildProblem.children[1]);
+        rChildProblem.height = Math.max(height(rChildProblemR), problemNode.height) + 1;
+        return rChildProblem;
+    }
+    
+    public AVLNode doubleRotateWithLeft(AVLNode problemNode) {
+        problemNode.children[0] = rotateWithRight(cast(problemNode.children[0]));
+        return rotateWithLeft(problemNode);
+    }
+    
+    public AVLNode doubleRotateWithRight(AVLNode problemNode) {
+        problemNode.children[1] = rotateWithLeft(cast(problemNode.children[1]));
+        return rotateWithRight(problemNode);
     }    
-    
-    private class AVLNode {
+        
+    public class AVLNode extends BSTNode { // AVLNode is subclass of BSTNode
         private int height;
-        private AVLNode left;
-        private AVLNode right;
         
-        public void AVLNode() {
-            this.height = 0;
-        } 
-        
-        // Need another constructor for new nodes so that we can increment the height property
+        public AVLNode(K key, V value) {
+            super(key, value);
+            height = 1;
+        }         
+    }
+    
+    private int height(AVLNode node) { // Accessing height of node
+        if (node == null) {
+            return 0;
+        }
+        return node.height;
+    }
+    
+    public V insert(K key, V value) {
+        if (key == null || value == null) {
+            throw new IllegalArgumentException();
+        }
+        V oldValue = find(key);
+        root = insert(root, key, value); // Traverse through tree and insert
+        return oldValue;
+    }
+    
+    private AVLNode insert(AVLNode node, K key, V value) {
+        if (node == null) {
+            node = new AVLNode(key, value);
+            this.size++;
+        } else if (key.compareTo(node.key) < 0) { // Should be left tree
+            AVLNode left = cast(node.children[0]);
+            AVLNode right = cast(node.children[1]);
+            node.children[0] = insert(left, key, value);
+            if (height(left) - height(right) == 2) {
+                if (key.compareTo(left.key) < 0) {
+                    node = rotateWithLeft(node);
+                } else {
+                    node = doubleRotateWithLeft(node);
+                }
+            }
+        } else if (key.compareTo(node.key) > 0) { // Should be right tree
+            AVLNode left = cast(node.children[0]);
+            AVLNode right = cast(node.children[1]);
+            node.children[1] = insert(right, key, value);
+            if (height(right) - height(left) == 2) {
+                if (key.compareTo(right.key) > 0) {
+                    node = rotateWithRight(node);
+                } else {
+                    node = doubleRotateWithRight(node);
+                }
+            }
+        } else if (key.compareTo(node.key) == 0) {  // Same key, replace value
+            node.value = value;
+        }
+        AVLNode left = cast(node.children[0]);
+        AVLNode right = cast(node.children[1]);
+        node.height = Math.max(height(left), height(right)) + 1; // Update height
+        return node;
+    }
+    
+    public AVLNode find(K key, V value) {
+        AVLNode prev = null;
+        AVLNode current = this.root;
+
+        int child = -1;
+
+        while (current != null) {
+            int direction = Integer.signum(key.compareTo(current.key));
+
+            // We found the key!
+            if (direction == 0) {
+                return current;
+            }
+            else {
+                // direction + 1 = {0, 2} -> {0, 1}
+                child = Integer.signum(direction + 1);
+                prev = current;
+                current = cast(current.children[child]);
+            }
+        }
+
+        // If value is not null, we need to actually add in the new value
+        if (value != null) {
+            current = new AVLNode(key, null);
+            if (this.root == null) {
+                this.root = current;
+            }
+            else {
+                assert(child >= 0); // child should have been set in the loop
+                                    // above
+                prev.children[child] = current;
+            }
+            this.size++;
+        }
+
+        return current;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private AVLNode cast(BSTNode node) {
+        return (AVLNode) node;
     }
 }
