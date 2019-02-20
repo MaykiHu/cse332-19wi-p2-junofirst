@@ -140,11 +140,11 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         Iterator<A> itr = key.iterator();
         while (itr.hasNext()) {
             A currChar = itr.next();
-            if (children.find(currChar) == null) {
-                return false;
-            } else {
+            if (children.find(currChar) != null) {
                 children = (ChainingHashTable<A, HashTrieMap<A, K, V>.HashTrieNode>) 
                 children.find(currChar).pointers;
+            } else {
+                return false;
             }
         }
         return true;
