@@ -38,42 +38,6 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
         this.root = null;
     }
     
-    @SuppressWarnings("unchecked")
-    public AVLNode rotateWithLeft(AVLNode problemNode) {
-        AVLNode lChildProblem = (AVLTree<K, V>.AVLNode) problemNode.children[0];
-        problemNode.children[0] = lChildProblem.children[1];
-        lChildProblem.children[1] = problemNode;
-        AVLNode problemNodeL = cast(problemNode.children[0]);
-        AVLNode problemNodeR = cast(problemNode.children[1]);
-        problemNode.height = Math.max(height(problemNodeL), height(problemNodeR)) + 1;
-        AVLNode lChildProblemL = cast(lChildProblem.children[0]);
-        lChildProblem.height = Math.max(height(lChildProblemL), problemNode.height) + 1;
-        return lChildProblem;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public AVLNode rotateWithRight(AVLNode problemNode) {
-        AVLNode rChildProblem = (AVLTree<K, V>.AVLNode) problemNode.children[1];
-        problemNode.children[1] = rChildProblem.children[0];
-        rChildProblem.children[0] = problemNode;
-        AVLNode problemNodeL = cast(problemNode.children[0]);
-        AVLNode problemNodeR = cast(problemNode.children[1]);
-        problemNode.height = Math.max(height(problemNodeL), height(problemNodeR)) + 1;
-        AVLNode rChildProblemR = cast(rChildProblem.children[1]);
-        rChildProblem.height = Math.max(height(rChildProblemR), problemNode.height) + 1;
-        return rChildProblem;
-    }
-    
-    public AVLNode doubleRotateWithLeft(AVLNode problemNode) {
-        problemNode.children[0] = rotateWithRight(cast(problemNode.children[0]));
-        return rotateWithLeft(problemNode);
-    }
-    
-    public AVLNode doubleRotateWithRight(AVLNode problemNode) {
-        problemNode.children[1] = rotateWithLeft(cast(problemNode.children[1]));
-        return rotateWithRight(problemNode);
-    }    
-        
     public class AVLNode extends BSTNode { // AVLNode is subclass of BSTNode
         private int height;
         
@@ -81,6 +45,11 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
             super(key, value);
             height = 1;
         }         
+    }
+    
+    @SuppressWarnings("unchecked")
+    private AVLNode cast(BSTNode node) {
+        return (AVLNode) node;
     }
     
     private int height(AVLNode node) { // Accessing height of node
@@ -134,6 +103,42 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
         return node;
     }
     
+    @SuppressWarnings("unchecked")
+    public AVLNode rotateWithLeft(AVLNode problemNode) {
+        AVLNode lChildProblem = (AVLTree<K, V>.AVLNode) problemNode.children[0];
+        problemNode.children[0] = lChildProblem.children[1];
+        lChildProblem.children[1] = problemNode;
+        AVLNode problemNodeL = cast(problemNode.children[0]);
+        AVLNode problemNodeR = cast(problemNode.children[1]);
+        problemNode.height = Math.max(height(problemNodeL), height(problemNodeR)) + 1;
+        AVLNode lChildProblemL = cast(lChildProblem.children[0]);
+        lChildProblem.height = Math.max(height(lChildProblemL), problemNode.height) + 1;
+        return lChildProblem;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public AVLNode rotateWithRight(AVLNode problemNode) {
+        AVLNode rChildProblem = (AVLTree<K, V>.AVLNode) problemNode.children[1];
+        problemNode.children[1] = rChildProblem.children[0];
+        rChildProblem.children[0] = problemNode;
+        AVLNode problemNodeL = cast(problemNode.children[0]);
+        AVLNode problemNodeR = cast(problemNode.children[1]);
+        problemNode.height = Math.max(height(problemNodeL), height(problemNodeR)) + 1;
+        AVLNode rChildProblemR = cast(rChildProblem.children[1]);
+        rChildProblem.height = Math.max(height(rChildProblemR), problemNode.height) + 1;
+        return rChildProblem;
+    }
+    
+    public AVLNode doubleRotateWithLeft(AVLNode problemNode) {
+        problemNode.children[0] = rotateWithRight(cast(problemNode.children[0]));
+        return rotateWithLeft(problemNode);
+    }
+    
+    public AVLNode doubleRotateWithRight(AVLNode problemNode) {
+        problemNode.children[1] = rotateWithLeft(cast(problemNode.children[1]));
+        return rotateWithRight(problemNode);
+    }    
+    
     public AVLNode find(K key, V value) {
         AVLNode prev = null;
         AVLNode current = this.root;
@@ -170,10 +175,5 @@ public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> 
         }
 
         return current;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private AVLNode cast(BSTNode node) {
-        return (AVLNode) node;
     }
 }
