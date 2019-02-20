@@ -130,11 +130,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if (key == null) {
             throw new IllegalArgumentException();
         }
-        
         if (key.isEmpty()) {
             return true;
         }
-        
         ChainingHashTable<A, HashTrieNode> children = (ChainingHashTable<A, HashTrieMap<A, K, V>.HashTrieNode>) 
                                             root.pointers;
         Iterator<A> itr = key.iterator();
