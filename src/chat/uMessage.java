@@ -28,16 +28,20 @@ import javax.swing.SwingWorker;
 import cse332.interfaces.misc.Dictionary;
 import cse332.types.AlphabeticString;
 import cse332.types.NGram;
+import datastructures.dictionaries.ChainingHashTable;
+import datastructures.dictionaries.MoveToFrontList;
 import p2.clients.NGramTester;
 import p2.wordsuggestor.WordSuggestor;
 
 public class uMessage {
     private static int N = 3;
-    private static String CORPUS = "eggs.txt";
+    private static String CORPUS = "irc.corpus";
+    // use trie map 
     private static Supplier<Dictionary<NGram, Dictionary<AlphabeticString, Integer>>> NEW_OUTER = NGramTester
             .trieConstructor(NGram.class);
-    private static Supplier<Dictionary<AlphabeticString, Integer>> NEW_INNER = NGramTester
-            .trieConstructor(AlphabeticString.class);
+    // use a chaining hash table 
+    private static Supplier<Dictionary<AlphabeticString, Integer>> NEW_INNER = 
+            () -> new ChainingHashTable<>(() -> new MoveToFrontList<>());
 
     /*
      *
