@@ -70,10 +70,10 @@ public class NGramToNextChoicesMap {
 
         Comparator<Item<String, Integer>> comp = new LargeValueFirstItemComparator<String, Integer>();
         if (k < 0) {
-            QuickSort.sort(afterNGrams, comp);
+            QuickSort.sort(afterNGrams, comp.reversed());
         }
         else {
-            TopKSort.sort(afterNGrams, k, comp); // :) 
+            TopKSort.sort(afterNGrams, k, comp.reversed()); // :) 
         }
 
         String[] nextWords = new String[k < 0 ? afterNGrams.length : k];
