@@ -60,22 +60,23 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     
     // Returns the index of key
     private int getArrIndex(K key) {
-        int code = key.hashCode();
-        return code % capacity;
+        return ((key.hashCode() % capacity) + capacity) % capacity;
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public V insert(K key, V value) {
+        if (key == null || value == null) {
+            throw new IllegalArgumentException();
+        }
         int index = getArrIndex(key);
-        V prevVal = find(key);
         if (hashArray[index] == null) {           // This will be a new chain (and item)
             hashArray[index] = newChain.get();    // Make a new chain
         } 
-        if (hashArray[index].find(key) == null) { // This will be a new item in chain
+        V result = hashArray[index].insert(key, value);      // Update chain with item
+        if (result == null) { // This will be a new item in chain
             size++;
         }
-        hashArray[index].insert(key, value);      // Update chain with item
         if (1.0 * size / capacity >= 0.75) {      // According to Java Doc, 0.75 is default load
             size = 0;
             if (capacities.size() == 0) {         // Update the capacity of table
@@ -95,17 +96,31 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
                 }
             }
         }
-        return prevVal;
+        return result;
     }
 
     @Override
     public V find(K key) {
-        int index = getArrIndex(key);   // Index of where key is located
-        Dictionary<K, V> chain = hashArray[index];   // Where key should be stored, get it
-        if (chain != null) { 
-            return chain.find(key);
+//        // Old one
+//        if (key == null) {
+//            throw new IllegalArgumentException();
+//        }
+//        int index = getArrIndex(key);   // Index of where key is located
+//        Dictionary<K, V> chain = hashArray[index];   // Where key should be stored, get it
+//        if (chain != null) { 
+//            return chain.find(key);
+//        }
+//        return null; // There is no mapping for this key
+        //New one
+        if (key == null) {
+            throw new IllegalArgumentException();
         }
-        return null; // There is no mapping for this key
+        int hash = getArrIndex(key);
+        if (hashArray[hash] == null) { 
+            return null;
+        } else {
+            return hashArray[hash].find(key);
+        }
     }
 
     @Override

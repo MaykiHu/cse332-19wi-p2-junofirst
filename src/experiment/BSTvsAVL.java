@@ -7,28 +7,6 @@ public class BSTvsAVL {
     public static final int NUM_TRIALS = 10;
     public static final int NUM_WARMUP = 5;
     
-    public static void main(String[] args) {
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 14.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 15.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 16.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 17.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 18.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 19.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 20.0)));
-        System.out.println(avgTestAVLFind(1000, (int) Math.pow(2.0, 21.0)));
-        
-        System.out.println();
-        
-        System.out.println(avgTestBSTFind(1000, 10000));
-        System.out.println(avgTestBSTFind(1000, 20000));
-        System.out.println(avgTestBSTFind(1000, 30000));
-        System.out.println(avgTestBSTFind(1000, 40000));
-        System.out.println(avgTestBSTFind(1000, 50000));
-        System.out.println(avgTestBSTFind(1000, 60000));
-        System.out.println(avgTestBSTFind(1000, 70000));
-        System.out.println(avgTestBSTFind(1000, 80000));
-    }
-    
     // These two methods are for making the worst possible BST and AVL trees
     public static double worstAVL(int k) {
         AVLTree<Integer, Boolean> tree = new AVLTree<>();
@@ -70,7 +48,6 @@ public class BSTvsAVL {
         }
         long time = System.nanoTime();
         for (int i = 0; i < k; i++) {
-            //Find the worst case number
             tree.find((int) Math.random() * range);
         }
         return System.nanoTime() - time;
@@ -83,13 +60,12 @@ public class BSTvsAVL {
         }
         long time = System.nanoTime();
         for (int i = 0; i < k; i++) {
-            //Find the worst case number
             tree.find((int) Math.random() * range);
         }
         return System.nanoTime() - time;
     }
     
- // These two methods are for finding the averages of the insert methods for BST and AVL
+    // These two methods are for finding the averages of the insert methods for BST and AVL
     public static double avgWorstBST(int n) {
         double total = 0;
         for(int i = 0; i < NUM_TRIALS; i++) {
