@@ -22,14 +22,14 @@ Team: Geovani Castro (geocas47) and Mayki Hu (mayki)
 > ✓ Passed *unsorted_duplicate_input* <br>
 > ✓ Passed *structure* <br>
 
-**HashTable** ✝ Exception `(3/6)`
+**HashTable**  `(6/6)`
 > ✓ Passed *initialize* <br>
 > ✓ Passed *insert* <br>
 > ✓ Passed *getters* <br>
-> `✝ Exception` *sorted_duplicate_input* <br>
-> `✝ Exception` *unsorted_duplicate_input* <br>
+> ✓ Passed *sorted_duplicate_input* <br>
+> ✓ Passed *unsorted_duplicate_input* <br>
 > ✓ Passed *comparator* <br>
-> `✝ Exception` *negative_hash_codes* <br>
+> ✓ Passed *negative_hash_codes* <br>
 
 **HeapSort**  `(5/5)`
 > ✓ Passed *integer_inorder* <br>
@@ -65,18 +65,18 @@ Team: Geovani Castro (geocas47) and Mayki Hu (mayki)
 > ✓ Passed *vary_length* <br>
 > ✓ Passed *vary_order* <br>
 
-**NGramToNextChoicesMap** ✝ Exception `(0/2)`
-> `✝ Exception` *poem* <br>
-> `✝ Exception` *large* <br>
+**NGramToNextChoicesMap**  `(2/2)`
+> ✓ Passed *poem* <br>
+> ✓ Passed *large* <br>
 
-**UMessage** ✝ Exception `(0/6)`
-> `✝ Exception` *simple_HashTable_AVL* <br>
-> `✝ Exception` *simple_HashTable_HashTable* <br>
+**UMessage** ✝ Exception `(2/6)`
+> ✓ Passed *simple_HashTable_AVL* <br>
+> ✓ Passed *simple_HashTable_HashTable* <br>
 > `✝ Exception` *simple_HashTable_AVL_topk* <br>
 > `✝ Exception` *simple_HashTable_HashTable_topk* <br>
-> `✝ Exception` *poem_HashTable_AVL* <br>
-> `✝ Exception` *poem_HashTable_HashTable* <br>
-> `✝ Exception` *poem_HashTable_MTF* <br>
+> ✓ Passed *poem_HashTable_AVL* <br>
+> ✓ Passed *poem_HashTable_HashTable* <br>
+> ✓ Passed *poem_HashTable_MTF* <br>
 > `✝ Exception` *poem_HashTable_AVL_topk* <br>
 > `✝ Exception` *poem_HashTable_HashTable_topk* <br>
 > `✝ Exception` *poem_HashTable_MTF_topk* <br>
@@ -84,11 +84,6 @@ Team: Geovani Castro (geocas47) and Mayki Hu (mayki)
 > `✝ Exception` *large_HashTable_HashTable_topk* <br>
 
 ## Miscellaneous ##
-
-
-
-
-
 
 **Above & Beyond**
 `(EX: 0)`
